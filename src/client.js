@@ -207,7 +207,12 @@ export default class Client {
   listResources({ restapiId }) {
     return this.getFetcher().get(
       `${this._getBaseUrl()}/restapis/${restapiId}/resources`
-    ).then(body => body._embedded.item.map(source => new Resource(source)));
+    ).then((body) => {
+      // API Gateway does not return an array when your API has only one resource (e.g. root resource)
+      let items = Array.isArray(body._embedded.item) ? body._embedded.item : [body._embedded.item];
+
+      return items.map(source => new Resource(source))
+    });
   }
 
   /**

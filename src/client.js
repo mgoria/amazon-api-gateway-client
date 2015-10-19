@@ -197,7 +197,7 @@ export default class Client {
   listDeployments({ restapiId }) {
     return this.getFetcher().get(
       `${this._getBaseUrl()}/restapis/${restapiId}/deployments`
-    ).then(body => body.item.map(source => new Deployment(source)));
+    ).then(body => body._embedded.item.map(source => new Deployment(source)));
   }
 
   /**
@@ -207,7 +207,7 @@ export default class Client {
   listResources({ restapiId }) {
     return this.getFetcher().get(
       `${this._getBaseUrl()}/restapis/${restapiId}/resources`
-    ).then(body => body.item.map(source => new Resource(source)));
+    ).then(body => body._embedded.item.map(source => new Resource(source)));
   }
 
   /**
@@ -216,7 +216,7 @@ export default class Client {
   listRestapis() {
     return this.getFetcher().get(
       `${this._getBaseUrl()}/restapis`
-    ).then(body => body.item.map(source => new Restapi(source)));
+    ).then(body => body._embedded.item.map(source => new Restapi(source)));
   }
 
   /**

@@ -197,7 +197,9 @@ export default class Client {
   listDeployments({ restapiId }) {
     return this.getFetcher().get(
       `${this._getBaseUrl()}/restapis/${restapiId}/deployments`
-    ).then(body => body._embedded.item.map(source => new Deployment(source)));
+    ).then((body) => {
+      return this._bodyItemToArray(body).map(source => new Deployment(source));
+    });
   }
 
   /**
@@ -208,10 +210,7 @@ export default class Client {
     return this.getFetcher().get(
       `${this._getBaseUrl()}/restapis/${restapiId}/resources`
     ).then((body) => {
-      // API Gateway does not return an array when your API has only one resource (e.g. root resource)
-      let items = Array.isArray(body._embedded.item) ? body._embedded.item : [body._embedded.item];
-
-      return items.map(source => new Resource(source))
+      return this._bodyItemToArray(body).map(source => new Resource(source));
     });
   }
 
@@ -221,7 +220,9 @@ export default class Client {
   listRestapis() {
     return this.getFetcher().get(
       `${this._getBaseUrl()}/restapis`
-    ).then(body => body._embedded.item.map(source => new Restapi(source)));
+    ).then((body) => {
+      return this._bodyItemToArray(body).map(source => new Restapi(source));
+    });
   }
 
   /**
@@ -448,5 +449,16 @@ export default class Client {
    */
   _getApiResources(restapiId) {
     return this._resources[restapiId];
+  }
+
+  /**
+   * body._embedded.item is not an array if it contains only one element
+   *
+   * @param {Object} body
+   * @returns {Array}
+   * @private
+   */
+  _bodyItemToArray(body) {
+    return Array.isArray(body._embedded.item) ? body._embedded.item : [body._embedded.item];
   }
 }

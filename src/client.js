@@ -414,7 +414,11 @@ export default class Client {
    * @private
    */
   _initResourcesStorageForApi(restapiId) {
-    return this._resources[restapiId] = {};
+    if (!this._resources.hasOwnProperty(restapiId)) {
+      this._resources[restapiId] = {};
+    }
+
+    return this._resources[restapiId];
   }
 
   /**
@@ -424,6 +428,8 @@ export default class Client {
    * @private
    */
   _storeApiResource(restapiId, resource) {
+    this._initResourcesStorageForApi(restapiId); // assure resources storage is created for this api
+
     return this._resources[restapiId][resource.source.path] = resource;
   }
 

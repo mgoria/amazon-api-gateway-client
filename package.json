@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "stackable-fetcher": "^0.3.0",
-    "stackable-fetcher-aws-signer-v4": "0.0.1"
+    "stackable-fetcher-aws-signer-v4": "0.0.1",
+    "es6-promise": "3.0.*"
   }
 }

@@ -1,3 +1,4 @@
+import {Promise} from 'es6-promise'
 import AwsSignerV4 from 'stackable-fetcher-aws-signer-v4'
 import { Fetcher, JsonRequestEncoder, JsonResponseDecoder, RejectLogger } from 'stackable-fetcher'
 import Deployment from './deployment'
@@ -9,6 +10,11 @@ import Model from './model'
 import path from 'path'
 import Resource from './resource'
 import Restapi from './restapi'
+
+// hack to avoid "native promise missing, set Fetch.Promise to your favorite alternative" error thrown by stackable-fetcher > node-fetch
+if (!global.Promise) {
+  global.Promise = Promise;
+}
 
 /**
  * @class Client
